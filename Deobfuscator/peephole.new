@@ -1,0 +1,2171 @@
+<!-- OP1 REG1, IMM1 (x86-x64) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg2</first_reg>
+	</match>
+	<match>
+		<insn>mov,add,sub,and,xor,or</insn>
+		<ins_name>op1</ins_name>
+		<first_reg>reg1</first_reg>
+		<first_reg_exclude>reg2</first_reg_exclude>
+		<imm>imm1</imm>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg2</first_reg>
+	</match>
+	<replace>
+		<rep_str>op1 reg1, imm1</rep_str>
+	</replace>
+</pattern>
+
+<!-- MOV REG1, 0 (x86-x64) -->
+<pattern>
+	<match>
+		<insn>xor</insn>
+		<first_reg>reg1</first_reg>
+		<second_reg>reg1</second_reg>
+	</match>
+	<replace>
+		<rep_str>mov reg1, 0</rep_str>
+	</replace>
+</pattern>
+
+<!-- MOV REG1, IMM1 (x86-x64) (word size) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<imm>imm1</imm>
+		<imm_size>2</imm_size>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg1</first_reg>
+		<first_reg_size>2</first_reg_size>
+	</match>
+	<replace>
+		<rep_str>mov reg1, imm1</rep_str>
+	</replace>
+</pattern>
+
+<!-- MOV REG1, IMM1 (x86-x64) (dword size) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<imm>imm1</imm>
+		<imm_size>4</imm_size>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg1</first_reg>
+		<first_reg_size>4</first_reg_size>
+	</match>
+	<replace>
+		<rep_str>mov reg1, imm1</rep_str>
+	</replace>
+</pattern>
+
+<!-- MOV REG1, IMM1 (x64) (qword size) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<imm>imm1</imm>
+		<imm_size>8</imm_size>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg1</first_reg>
+		<first_reg_size>8</first_reg_size>
+	</match>
+	<replace>
+		<rep_str>mov reg1, imm1</rep_str>
+	</replace>
+</pattern>
+
+<!-- MOV REG1, REG2 (x86-x64) (word/dword/qword size) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg2</first_reg>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<replace>
+		<rep_str>mov reg1, reg2</rep_str>
+	</replace>
+</pattern>
+
+<!-- MOV REG1, [MEM1] (x86-x64) (word/dword/qword size) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<mem>mem1</mem>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<replace>
+		<rep_str>mov reg1, mem1</rep_str>
+	</replace>
+</pattern>
+
+<!-- MOV [MEM1], REG1 (x86-x64) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<mem>mem1</mem>
+	</match>
+	<replace>
+		<rep_str>mov mem1, reg1</rep_str>
+	</replace>
+</pattern>
+
+<!-- OP1 [REG1 + REG2], IMM1 (x86-x64) (byte/word/dword/qword size) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg3</first_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg3</first_reg>
+		<second_reg>reg2</second_reg>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>reg3</first_reg>
+		<second_reg>reg1</second_reg>
+	</match>
+	<match>
+		<insn>mov,add,sub,and,xor,or</insn>
+		<ins_name>op1</ins_name>
+		<mem>mem1</mem>
+		<mem_base>reg3</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<mem_size_name>szm1</mem_size_name>
+		<imm>imm1</imm>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg3</first_reg>
+	</match>
+	<replace>
+		<rep_str>op1 szm1 ptr [reg1 + reg2], imm1</rep_str>
+	</replace>
+</pattern>
+
+<!-- OP1 [REG1 + REG2], REG3 (x86-x64) (byte/word/dword/qword size) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg4</first_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg4</first_reg>
+		<second_reg>reg2</second_reg>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>reg4</first_reg>
+		<second_reg>reg1</second_reg>
+	</match>
+	<match>
+		<insn>mov,add,sub,and,xor,or</insn>
+		<ins_name>op1</ins_name>
+		<mem>mem1</mem>
+		<mem_base>reg4</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<second_reg>reg3</second_reg>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg4</first_reg>
+	</match>
+	<replace>
+		<rep_str>op1 ptr [reg1 + reg2], reg3</rep_str>
+	</replace>
+</pattern>
+
+<!-- NOP (x86) -->
+<pattern>
+	<match>
+		<insn>pushal</insn>
+	</match>
+	<match>
+		<insn>popal</insn>
+	</match>
+</pattern>
+
+<!-- NOP (x86-x64) -->
+<pattern>
+	<match>
+		<insn>pushfd</insn>
+	</match>
+	<match>
+		<insn>popfd</insn>
+	</match>
+</pattern>
+
+<!-- PUSH IMM1 (x86-x64) (word size) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg1</first_reg>
+		<first_reg_size>2</first_reg_size>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<mem_size>2</mem_size>
+		<mem_base>stack</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<imm>imm1</imm>
+		<imm_size>2</imm_size>
+	</match>
+	<replace>
+		<rep_str>push word imm1</rep_str>
+	</replace>
+</pattern>
+
+<!-- PUSH IMM1 (x86-x64) (dword size) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg1</first_reg>
+		<first_reg_size>4</first_reg_size>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<mem_size>4</mem_size>
+		<mem_base>stack</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<imm>imm1</imm>
+		<imm_size>4</imm_size>
+	</match>
+	<replace>
+		<rep_str>push imm1</rep_str>
+	</replace>
+</pattern>
+
+<!-- PUSH IMM1 (x64) (qword size) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg1</first_reg>
+		<first_reg_size>8</first_reg_size>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<mem_size>8</mem_size>
+		<mem_base>stack</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<imm>imm1</imm>
+		<imm_size>8</imm_size>
+	</match>
+	<replace>
+		<rep_str>push imm1</rep_str>
+	</replace>
+</pattern>
+
+<!-- PUSH IMM1 (x86-x64) (word size) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<imm>imm2</imm>
+		<imm_size>2</imm_size>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<mem_size>2</mem_size>
+		<mem_base>stack</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<imm>imm1</imm>
+		<imm_size>2</imm_size>
+	</match>
+	<replace>
+		<rep_str>push word imm1</rep_str>
+	</replace>
+</pattern>
+
+<!-- PUSH IMM1 (x86-x64) (dword size) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<imm>imm2</imm>
+		<imm_size>4</imm_size>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<mem_size>4</mem_size>
+		<mem_base>stack</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<imm>imm1</imm>
+		<imm_size>4</imm_size>
+	</match>
+	<replace>
+		<rep_str>push imm1</rep_str>
+	</replace>
+</pattern>
+
+<!-- PUSH IMM1 (x86-x64) (dword size) -->
+<pattern>
+	<match>
+		<insn>sub</insn>
+		<first_reg>stack</first_reg>
+		<imm>4</imm>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<mem_size>4</mem_size>
+		<mem_base>stack</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<imm>imm1</imm>
+		<imm_size>4</imm_size>
+	</match>
+	<replace>
+		<rep_str>push imm1</rep_str>
+	</replace>
+</pattern>
+
+<!-- PUSH IMM1 (x86-x64) (word size) -->
+<pattern>
+	<match>
+		<insn>sub</insn>
+		<first_reg>stack</first_reg>
+		<imm>2</imm>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<mem_size>2</mem_size>
+		<mem_base>stack</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<imm>imm1</imm>
+		<imm_size>2</imm_size>
+	</match>
+	<replace>
+		<rep_str>push word imm1</rep_str>
+	</replace>
+</pattern>
+
+<!-- PUSH REG1 (x86-x64) (word size) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg2</first_reg>
+		<first_reg_size>2</first_reg_size>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<mem_size>2</mem_size>
+		<mem_base>stack</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<second_reg>reg1</second_reg>
+		<second_reg_size>2</second_reg_size>
+	</match>
+	<replace>
+		<rep_str>push reg1</rep_str>
+	</replace>
+</pattern>
+
+<!-- PUSH REG1 (x86-x64) (word size) -->
+<pattern>
+	<match>
+		<insn>sub</insn>
+		<first_reg>stack</first_reg>
+		<imm>2</imm>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<mem_size>2</mem_size>
+		<mem_base>stack</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<second_reg>reg1</second_reg>
+	</match>
+	<replace>
+		<rep_str>push reg1</rep_str>
+	</replace>
+</pattern>
+
+<!-- PUSH REG1 (x86-x64) (dword size) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg2</first_reg>
+		<first_reg_size>4</first_reg_size>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<mem_size>4</mem_size>
+		<mem_base>stack</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<second_reg>reg1</second_reg>
+		<second_reg_size>4</second_reg_size>
+	</match>
+	<replace>
+		<rep_str>push reg1</rep_str>
+	</replace>
+</pattern>
+
+<!-- PUSH REG1 (x64) (qword size) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg2</first_reg>
+		<first_reg_size>8</first_reg_size>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<mem_size>8</mem_size>
+		<mem_base>stack</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<second_reg>reg1</second_reg>
+		<second_reg_size>8</second_reg_size>
+	</match>
+	<replace>
+		<rep_str>push reg1</rep_str>
+	</replace>
+</pattern>
+
+<!-- PUSH REG1 (x86-x64) (word size) -->
+<pattern>
+	<match>
+		<insn>sub</insn>
+		<first_reg>stack</first_reg>
+		<first_reg_size>2</first_reg_size>
+		<imm>2</imm>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<mem_size>2</mem_size>
+		<mem_base>stack</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<second_reg>reg1</second_reg>
+	</match>
+	<replace>
+		<rep_str>push reg1</rep_str>
+	</replace>
+</pattern>
+
+<!-- PUSH REG1 (x86-x64) (dword size) -->
+<pattern>
+	<match>
+		<insn>sub</insn>
+		<first_reg>stack</first_reg>
+		<first_reg_size>4</first_reg_size>
+		<imm>4</imm>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<mem_size>4</mem_size>
+		<mem_base>stack</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<second_reg>reg1</second_reg>
+	</match>
+	<replace>
+		<rep_str>push reg1</rep_str>
+	</replace>
+</pattern>
+
+<!-- PUSH REG1 (x64) (qword size) -->
+<pattern>
+	<match>
+		<insn>sub</insn>
+		<first_reg>stack</first_reg>
+		<first_reg_size>8</first_reg_size>
+		<imm>8</imm>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<mem_size>8</mem_size>
+		<mem_base>stack</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<second_reg>reg1</second_reg>
+	</match>
+	<replace>
+		<rep_str>push reg1</rep_str>
+	</replace>
+</pattern>
+
+<!-- PUSH REG1 (x86-x64) (word size) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<imm>imm1</imm>
+		<imm_size>2</imm_size>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<mem_size>2</mem_size>
+		<mem_base>stack</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<second_reg>reg1</second_reg>
+		<second_reg_size>2</second_reg_size>
+	</match>
+	<replace>
+		<rep_str>push reg1</rep_str>
+	</replace>
+</pattern>
+
+<!-- PUSH REG1 (x86-x64) (dword size) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<imm>imm1</imm>
+		<imm_size>4</imm_size>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<mem_size>4</mem_size>
+		<mem_base>stack</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<second_reg>reg1</second_reg>
+		<second_reg_size>4</second_reg_size>
+	</match>
+	<replace>
+		<rep_str>push reg1</rep_str>
+	</replace>
+</pattern>
+
+<!-- PUSH REG1 (x64) (qword size) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<imm>imm1</imm>
+		<imm_size>8</imm_size>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<mem_size>8</mem_size>
+		<mem_base>stack</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<second_reg>reg1</second_reg>
+		<second_reg_size>8</second_reg_size>
+	</match>
+	<replace>
+		<rep_str>push reg1</rep_str>
+	</replace>
+</pattern>
+
+<!-- PUSH ESP (x86) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg1</first_reg>
+		<first_reg_size>4</first_reg_size>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<mem_size>4</mem_size>
+		<mem_base>esp</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<second_reg>esp</second_reg>
+	</match>
+	<replace>
+		<rep_str>push esp</rep_str>
+	</replace>
+	<replace>
+		<rep_str>sub dword ptr [esp], 4</rep_str>
+	</replace>
+</pattern>
+
+<!-- PUSH ESP (x86) TO BE CHECKED -->
+<pattern>
+	<match>
+		<insn>sub</insn>
+		<first_reg>esp</first_reg>
+		<imm>4</imm>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<mem_size>4</mem_size>
+		<mem_base>esp</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<second_reg>esp</second_reg>
+	</match>
+	<replace>
+		<rep_str>push esp</rep_str>
+	</replace>
+	<replace>
+		<rep_str>sub dword ptr [esp], 4</rep_str>
+	</replace>
+</pattern>
+
+<!-- PUSH ESP (x86) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<imm>imm1</imm>
+		<imm_size>4</imm_size>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<mem_size>4</mem_size>
+		<mem_base>esp</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<second_reg>esp</second_reg>
+	</match>
+	<replace>
+		<rep_str>push esp</rep_str>
+	</replace>
+	<replace>
+		<rep_str>sub dword ptr [esp], 4</rep_str>
+	</replace>
+</pattern>
+
+<!-- PUSH RSP (x64) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg1</first_reg>
+		<first_reg_size>8</first_reg_size>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<mem_size>8</mem_size>
+		<mem_base>rsp</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<second_reg>rsp</second_reg>
+	</match>
+	<replace>
+		<rep_str>push rsp</rep_str>
+	</replace>
+	<replace>
+		<rep_str>sub qword ptr [rsp], 8</rep_str>
+	</replace>
+</pattern>
+
+<!-- PUSH RSP (x64) TO BE CHECHED -->
+<pattern>
+	<match>
+		<insn>sub</insn>
+		<first_reg>rsp</first_reg>
+		<imm>8</imm>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<mem_size>8</mem_size>
+		<mem_base>rsp</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<second_reg>rsp</second_reg>
+	</match>
+	<replace>
+		<rep_str>push rsp</rep_str>
+	</replace>
+	<replace>
+		<rep_str>sub qword ptr [rsp], 8</rep_str>
+	</replace>
+</pattern>
+
+<!-- POP REG1 (x86-x64) (word size) TO BE CHECKED -->
+<pattern>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg1</first_reg>
+		<first_reg_size>2</first_reg_size>
+		<mem>mem1</mem>
+		<mem_size>2</mem_size>
+		<mem_base>stack</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>stack</first_reg>
+		<imm>2</imm>
+	</match>
+	<replace>
+		<rep_str>pop reg1</rep_str>
+	</replace>
+</pattern>
+
+<!-- POP REG1 (x86-x64) (dword size) -->
+<pattern>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg1</first_reg>
+		<first_reg_size>4</first_reg_size>
+		<mem>mem1</mem>
+		<mem_size>4</mem_size>
+		<mem_base>stack</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>stack</first_reg>
+		<imm>4</imm>
+	</match>
+	<replace>
+		<rep_str>pop reg1</rep_str>
+	</replace>
+</pattern>
+
+<!-- POP REG1 (x64) (qword size) -->
+<pattern>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg1</first_reg>
+		<first_reg_size>8</first_reg_size>
+		<mem>mem1</mem>
+		<mem_size>8</mem_size>
+		<mem_base>stack</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>stack</first_reg>
+		<imm>8</imm>
+	</match>
+	<replace>
+		<rep_str>pop reg1</rep_str>
+	</replace>
+</pattern>
+
+<!-- XCHG REG1, REG2 (x86-x64) -->
+<pattern>
+	<match>
+		<insn>xor</insn>
+		<first_reg>reg1</first_reg>
+		<second_reg>reg2</second_reg>
+	</match>
+	<match>
+		<insn>xor</insn>
+		<first_reg>reg2</first_reg>
+		<second_reg>reg1</second_reg>
+	</match>
+	<match>
+		<insn>xor</insn>
+		<first_reg>reg1</first_reg>
+		<second_reg>reg2</second_reg>
+	</match>
+	<replace>
+		<rep_str>xchg reg1, reg2</rep_str>
+	</replace>
+</pattern>
+
+<!-- XCHG REG1, REG2 (x86-x64) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg2</first_reg>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg2</first_reg>
+	</match>
+	<replace>
+		<rep_str>xchg reg1, reg2</rep_str>
+	</replace>
+</pattern>
+
+<!-- XCHG REG1, REG2 (x86-x64) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg1</first_reg>
+		<second_reg>reg2</second_reg>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg2</first_reg>
+	</match>
+	<replace>
+		<rep_str>xchg reg1, reg2</rep_str>
+	</replace>
+</pattern>
+
+<!-- XCHG REG1, [MEM1] (x86-x64) -->
+<pattern>
+	<match>
+		<insn>xor</insn>
+		<mem>mem1</mem>
+		<second_reg>reg1</second_reg>
+	</match>
+	<match>
+		<insn>xor</insn>
+		<first_reg>reg1</first_reg>
+		<mem>mem1</mem>
+		<mem_enable_checks></mem_enable_checks>
+	</match>
+	<match>
+		<insn>xor</insn>
+		<mem>mem1</mem>
+		<mem_enable_checks></mem_enable_checks>
+		<second_reg>reg1</second_reg>
+	</match>
+	<replace>
+		<rep_str>xchg reg1, mem1</rep_str>
+	</replace>
+</pattern>
+
+<!-- XCHG REG1, [MEM1] (x86-x64) -->
+<pattern>
+	<match>
+		<insn>xor</insn>
+		<first_reg>reg1</first_reg>
+		<mem>mem1</mem>
+	</match>
+	<match>
+		<insn>xor</insn>
+		<mem>mem1</mem>
+		<mem_enable_checks></mem_enable_checks>
+		<second_reg>reg1</second_reg>
+	</match>
+	<match>
+		<insn>xor</insn>
+		<first_reg>reg1</first_reg>
+		<mem>mem1</mem>
+		<mem_enable_checks></mem_enable_checks>
+	</match>
+	<replace>
+		<rep_str>xchg reg1, mem1</rep_str>
+	</replace>
+</pattern>
+
+<!-- NEG REG1 (x86-x64) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<imm>0</imm>
+	</match>
+	<match>
+		<insn>sub</insn>
+		<mem>mem1</mem>
+		<mem_base>stack</mem_base>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<second_reg>reg1</second_reg>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<replace>
+		<rep_str>neg reg1</rep_str>
+	</replace>
+</pattern>
+
+<!-- NEG REG1 (x86-x64) -->
+<pattern>
+	<match>
+		<insn>not</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<match>
+		<insn>inc</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<replace>
+		<rep_str>neg reg1</rep_str>
+	</replace>
+</pattern>
+
+<!-- NEG REG1 (x86-x64) -->
+<pattern>
+	<match>
+		<insn>dec</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<match>
+		<insn>not</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<replace>
+		<rep_str>neg reg1</rep_str>
+	</replace>
+</pattern>
+
+<!-- NEG REG1 (x86-x64) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg2</first_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg2</first_reg>
+		<imm>0</imm>
+	</match>
+	<match>
+		<insn>sub</insn>
+		<first_reg>reg2</first_reg>
+		<second_reg>reg1</second_reg>
+	</match>
+	<match>
+		<insn>xchg</insn>
+		<first_reg>reg1</first_reg>
+		<second_reg>reg2</second_reg>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg2</first_reg>
+	</match>
+	<replace>
+		<rep_str>neg reg1</rep_str>
+	</replace>
+</pattern>
+
+<!-- NEG REG1 (x86-x64) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg2</first_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg2</first_reg>
+		<imm>0</imm>
+	</match>
+	<match>
+		<insn>sub</insn>
+		<first_reg>reg2</first_reg>
+		<second_reg>reg1</second_reg>
+	</match>
+	<match>
+		<insn>xchg</insn>
+		<first_reg>reg2</first_reg>
+		<second_reg>reg1</second_reg>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg2</first_reg>
+	</match>
+	<replace>
+		<rep_str>neg reg1</rep_str>
+	</replace>
+</pattern>
+
+<!-- NEG [MEM1] (x86-x64) TO BE CHECKED -->
+<pattern>
+	<match>
+		<insn>not</insn>
+		<mem>mem1</mem>
+	</match>
+	<match>
+		<insn>sub</insn>
+		<mem>mem1</mem>
+		<mem_enable_checks></mem_enable_checks>
+		<imm>-1</imm>
+	</match>
+	<replace>
+		<rep_str>neg mem1</rep_str>
+	</replace>
+</pattern>
+
+<!-- NEG [MEM1] (x86-x64) -->
+<pattern>
+	<match>
+		<insn>not</insn>
+		<mem>mem1</mem>
+	</match>
+	<match>
+		<insn>inc</insn>
+		<mem>mem1</mem>
+		<mem_enable_checks></mem_enable_checks>
+	</match>
+	<replace>
+		<rep_str>neg mem1</rep_str>
+	</replace>
+</pattern>
+
+<!-- NEG [MEM1] (x86-x64) -->
+<pattern>
+	<match>
+		<insn>dec</insn>
+		<mem>mem1</mem>
+	</match>
+	<match>
+		<insn>not</insn>
+		<mem>mem1</mem>
+		<mem_enable_checks></mem_enable_checks>
+	</match>
+	<replace>
+		<rep_str>neg mem1</rep_str>
+	</replace>
+</pattern>
+
+<!-- OP1 REG1 (x86-x64) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<match>
+		<insn>neg,not,inc,dec</insn>
+		<ins_name>op1</ins_name>
+		<mem>mem1</mem>
+		<mem_base>stack</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<replace>
+		<rep_str>op1 reg1</rep_str>
+	</replace>
+</pattern>
+
+<!-- OP1 REG1 (x86-x64) -->
+<pattern>
+	<match>
+		<insn>xchg</insn>
+		<first_reg>reg1</first_reg>
+		<second_reg>reg2</second_reg>
+	</match>
+	<match>
+		<insn>neg,not,inc,dec</insn>
+		<ins_name>op1</ins_name>
+		<first_reg>reg2</first_reg>
+	</match>
+	<match>
+		<insn>xchg</insn>
+		<first_reg>reg1</first_reg>
+		<second_reg>reg2</second_reg>
+	</match>
+	<replace>
+		<rep_str>op1 reg1</rep_str>
+	</replace>
+</pattern>
+
+<!-- OP1 [MEM1] (x86-x64) -->
+<pattern>
+	<match>
+		<insn>xchg</insn>
+		<mem>mem1</mem>
+		<second_reg>reg1</second_reg>
+	</match>
+	<match>
+		<insn>neg,not,inc,dec</insn>
+		<ins_name>op1</ins_name>
+		<first_reg>reg1</first_reg>
+	</match>
+	<match>
+		<insn>xchg</insn>
+		<mem>mem1</mem>
+		<mem_enable_checks></mem_enable_checks>
+		<second_reg>reg1</second_reg>
+	</match>
+	<replace>
+		<rep_str>op1 mem1</rep_str>
+	</replace>
+</pattern>
+
+<!-- OP1 REG1, IMM1 (x86-x64) -->
+<pattern>
+	<match>
+		<insn>xchg</insn>
+		<first_reg>reg1</first_reg>
+		<second_reg>reg2</second_reg>
+	</match>
+	<match>
+		<insn>mov,add,sub,and,xor,or</insn>
+		<ins_name>op1</ins_name>
+		<first_reg>reg2</first_reg>
+		<imm>imm1</imm>
+	</match>
+	<match>
+		<insn>xchg</insn>
+		<first_reg>reg1</first_reg>
+		<second_reg>reg2</second_reg>
+	</match>
+	<replace>
+		<rep_str>op1 reg1, imm1</rep_str>
+	</replace>
+</pattern>
+
+<!-- OP1 [ESP], IMM1 (x86) TO BE CHECKED -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<match>
+		<insn>mov,add,sub,and,xor,or</insn>
+		<mem>mem1</mem>
+		<mem_base>stack</mem_base>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<mem_size_name>szm1</mem_size_name>
+		<imm>imm1</imm>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<replace>
+		<rep_str>op szm1 ptr [esp], imm1</rep_str>
+	</replace>
+</pattern>
+
+<!-- OP1 [REG1 + IMM1], IMM2 -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg1</first_reg>
+		<imm>imm1</imm>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>reg1</first_reg>
+		<second_reg>reg2</second_reg>
+	</match>
+	<match>
+		<insn>add,sub,and,xor,or</insn>
+		<ins_name>op1</ins_name>
+		<mem>mem1</mem>
+		<mem_base>reg1</mem_base>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<mem_size_name>szm1</mem_size_name>
+		<imm>imm2</imm>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<replace>
+		<rep_str>op1 szm1 ptr [reg1 + imm1], imm2</rep_str>
+	</replace>
+</pattern>
+
+<!-- OP1 [REG1 + REG2], REG3 -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg4</first_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg4</first_reg>
+		<second_reg>reg2</second_reg>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>reg4</first_reg>
+		<second_reg>reg1</second_reg>
+	</match>
+	<match>
+		<insn>add,sub,and,xor,or</insn>
+		<ins_name>op1</ins_name>
+		<mem>mem1</mem>
+		<mem_base>reg4</mem_base>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<mem_size_name>szm1</mem_size_name>
+		<second_reg>reg3</second_reg>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg4</first_reg>
+	</match>
+	<replace>
+		<rep_str>op1 szm1 ptr [reg1 + reg2], reg3</rep_str>
+	</replace>
+</pattern>
+
+<!-- OP1 [REG1], REG2 -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg3</first_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg3</first_reg>
+		<imm>0</imm>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>reg3</first_reg>
+		<second_reg>reg1</second_reg>
+	</match>
+	<match>
+		<insn>add,sub,and,xor,or</insn>
+		<ins_name>op1</ins_name>
+		<mem>mem1</mem>
+		<mem_base>reg3</mem_base>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<mem_size_name>szm1</mem_size_name>
+		<second_reg>reg2</second_reg>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg3</first_reg>
+	</match>
+	<replace>
+		<rep_str>op1 szm1 ptr [reg1], reg2</rep_str>
+	</replace>
+</pattern>
+
+<!-- ADD REG1, REG2 (x86-x64) (Themida) -->
+<pattern>
+	<match>
+		<insn>add</insn>
+		<first_reg>reg1</first_reg>
+		<imm>imm1</imm>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>reg1</first_reg>
+		<second_reg>reg2</second_reg>
+	</match>
+	<match>
+		<insn>sub</insn>
+		<first_reg>reg1</first_reg>
+		<imm>imm1</imm>
+	</match>
+	<replace>
+		<rep_str>add reg1, reg2</rep_str>
+	</replace>
+</pattern>
+
+<!-- ADD REG1, REG2 (x86-x64) (Themida) -->
+<pattern>
+	<match>
+		<insn>sub</insn>
+		<first_reg>reg1</first_reg>
+		<imm>imm1</imm>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>reg1</first_reg>
+		<second_reg>reg2</second_reg>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>reg1</first_reg>
+		<imm>imm1</imm>
+	</match>
+	<replace>
+		<rep_str>add reg1, reg2</rep_str>
+	</replace>
+</pattern>
+
+<!-- SUB REG1, REG2 (x86-x64) (Themida) -->
+<pattern>
+	<match>
+		<insn>add</insn>
+		<first_reg>reg1</first_reg>
+		<imm>imm1</imm>
+	</match>
+	<match>
+		<insn>sub</insn>
+		<first_reg>reg1</first_reg>
+		<second_reg>reg2</second_reg>
+	</match>
+	<match>
+		<insn>sub</insn>
+		<first_reg>reg1</first_reg>
+		<imm>imm1</imm>
+	</match>
+	<replace>
+		<rep_str>sub reg1, reg2</rep_str>
+	</replace>
+</pattern>
+
+<!-- SUB REG1, REG2 (x86-x64) (Themida) -->
+<pattern>
+	<match>
+		<insn>sub</insn>
+		<first_reg>reg1</first_reg>
+		<imm>imm1</imm>
+	</match>
+	<match>
+		<insn>sub</insn>
+		<first_reg>reg1</first_reg>
+		<second_reg>reg2</second_reg>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>reg1</first_reg>
+		<imm>imm1</imm>
+	</match>
+	<replace>
+		<rep_str>sub reg1, reg2</rep_str>
+	</replace>
+</pattern>
+
+<!-- MOV REG1, REG2 - ADD REG1, IMM1 (x86) (Themida) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg2</first_reg>
+	</match>
+	<match>
+		<insn>add</insn>
+		<mem>mem1</mem>
+		<mem_size>4</mem_size>
+		<mem_base>esp</mem_base>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<imm>imm1</imm>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<replace>
+		<rep_str>mov reg1, reg2</rep_str>
+	</replace>
+	<replace>
+		<rep_str>add reg1, imm1</rep_str>
+	</replace>
+</pattern>
+
+<!-- XCHG REG1, DWORD PTR [ESP] (x86) (Themida) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg1</first_reg>
+		<mem>mem1</mem>
+		<mem_size>4</mem_size>
+		<mem_base>esp</mem_base>
+		<mem_scale>1</mem_scale>
+		<mem_disp>4</mem_disp>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<mem>mem1</mem>
+		<mem_size>4</mem_size>
+		<mem_base>esp</mem_base>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+	</match>
+	<replace>
+		<rep_str>xchg reg1, dword ptr [esp]</rep_str>
+	</replace>
+</pattern>
+
+<!-- SUB ESP, 4 (x86) (Themida) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg1</first_reg>
+		<second_reg>esp</second_reg>
+	</match>
+	<match>
+		<insn>xchg</insn>
+		<mem>mem1</mem>
+		<mem_size>4</mem_size>
+		<mem_base>esp</mem_base>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<second_reg>reg1</second_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>esp</first_reg>
+		<mem>mem1</mem>
+		<mem_size>4</mem_size>
+		<mem_base>esp</mem_base>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+	</match>
+	<replace>
+		<rep_str>sub esp, 4</rep_str>
+	</replace>
+</pattern>
+
+<!-- SUB ESP, 4 (x86) (Themida) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg1</first_reg>
+		<second_reg>esp</second_reg>
+	</match>
+	<match>
+		<insn>xchg</insn>
+		<mem>mem1</mem>
+		<mem_size>4</mem_size>
+		<mem_base>esp</mem_base>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<second_reg>reg1</second_reg>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>esp</first_reg>
+	</match>
+	<replace>
+		<rep_str>sub esp, 4</rep_str>
+	</replace>
+</pattern>
+
+<!-- ADD RSP, IMM1 - SUB RSP, 8 (x64) (Themida) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg1</first_reg>
+		<second_reg>rsp</second_reg>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>reg1</first_reg>
+		<imm>imm1</imm>
+		<update_imm>-,I,8</update_imm>
+	</match>
+	<match>
+		<insn>xchg</insn>
+		<mem>mem1</mem>
+		<mem_size>8</mem_size>
+		<mem_base>rsp</mem_base>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>rsp</first_reg>
+		<mem>mem1</mem>
+		<mem_size>8</mem_size>
+		<mem_base>rsp</mem_base>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+	</match>
+	<replace>
+		<rep_str>add rsp, imm1</rep_str>
+	</replace>
+</pattern>
+
+<!-- ADD RSP, IMM1 - SUB RSP, 8 (x64) (Themida) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg1</first_reg>
+		<second_reg>rsp</second_reg>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>reg1</first_reg>
+		<imm>imm1</imm>
+		<update_imm>-,I,8</update_imm>
+	</match>
+	<match>
+		<insn>xchg</insn>
+		<mem>mem1</mem>
+		<mem_size>8</mem_size>
+		<mem_base>rsp</mem_base>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>rsp</first_reg>
+	</match>
+	<replace>
+		<rep_str>add rsp, imm1</rep_str>
+	</replace>
+</pattern>
+
+<!-- NOP (x86) (Themida) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg1</first_reg>
+		<first_reg_size>2</first_reg_size>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>esp</first_reg>
+		<imm>2</imm>
+	</match>
+</pattern>
+
+<!-- NOP (x86) (Themida) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg1</first_reg>
+		<first_reg_size>4</first_reg_size>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>esp</first_reg>
+		<imm>4</imm>
+	</match>
+</pattern>
+
+<!-- NOP (x64) (Themida) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg1</first_reg>
+		<first_reg_size>8</first_reg_size>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>rsp</first_reg>
+		<imm>8</imm>
+	</match>
+</pattern>
+
+<!-- NOP (x86-x64) (Themida) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>imm1</first_reg>
+		<first_reg_size>2</first_reg_size>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>stack</first_reg>
+		<imm>2</imm>
+	</match>
+</pattern>
+
+<!-- NOP (x86) (Themida) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg1</first_reg>
+		<first_reg_size>4</first_reg_size>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>stack</first_reg>
+		<imm>4</imm>
+	</match>
+</pattern>
+
+<!-- NOP (x86-x64) (Themida) -->
+<pattern>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg1</first_reg>
+		<second_reg>reg1</second_reg>
+	</match>
+</pattern>
+
+<!-- OP1 [MEM1], IMM1 -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<match>
+		<insn>mov,add,sub,and,xor,or</insn>
+		<ins_name>op1</ins_name>
+		<mem>mem1</mem>
+		<imm>imm1</imm>
+		<mem_disp_off>-4</mem_disp_off>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<replace>
+		<rep_str>op1 mem1, imm1</rep_str>
+	</replace>
+</pattern>
+
+<!-- MOV QWORD PTR [RSP], REG1 -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg2</first_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg2</first_reg>
+		<second_reg>reg1</second_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<mem_size>8</mem_size>
+		<mem_base>rsp</mem_base>
+		<mem_scale>1</mem_scale>
+		<mem_disp>8</mem_disp>
+		<second_reg>reg2</second_reg>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg2</first_reg>
+	</match>
+	<replace>
+		<rep_str>mov qword ptr [rsp], reg1</rep_str>
+	</replace>
+</pattern>
+
+<!-- POP REG1 - ADD ESP, 4 (x86) (Themida) -->
+<pattern>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg1</first_reg>
+		<mem>mem1</mem>
+		<mem_size>4</mem_size>
+		<mem_base>esp</mem_base>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>esp</first_reg>
+		<imm>8</imm>
+	</match>
+	<replace>
+		<rep_str>pop reg1</rep_str>
+	</replace>
+	<replace>
+		<rep_str>add esp, 4</rep_str>
+	</replace>
+</pattern>
+
+<!-- MOV REG1, REG2 - OP1 REG2, IMM1 (x86-x64) (Themida) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg2</first_reg>
+	</match>
+	<match>
+		<insn>add,sub,and,xor,or</insn>
+		<ins_name>op1</ins_name>
+		<mem>mem1</mem>
+		<mem_base>stack</mem_base>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<imm>imm1</imm>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<replace>
+		<rep_str>mov reg1, reg2</rep_str>
+	</replace>
+	<replace>
+		<rep_str>op1 reg1, imm1</rep_str>
+	</replace>
+</pattern>
+
+<!-- MOV REG1, IMM2 - OP1 REG2, IMM1 (x86-x64) (Themida) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<imm>imm2</imm>
+	</match>
+	<match>
+		<insn>add,sub,and,xor,or</insn>
+		<ins_name>op1</ins_name>
+		<mem>mem1</mem>
+		<mem_base>stack</mem_base>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<imm>imm1</imm>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<replace>
+		<rep_str>mov reg1, imm2</rep_str>
+	</replace>
+	<replace>
+		<rep_str>op1 reg1, imm1</rep_str>
+	</replace>
+</pattern>
+
+<!-- MOV [MEM1], REG1 (x86-x64) (Themida) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg2</first_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg2</first_reg>
+		<second_reg>reg1</second_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<second_reg>reg2</second_reg>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg2</first_reg>
+	</match>
+	<replace>
+		<rep_str>mov mem1, reg1</rep_str>
+	</replace>
+</pattern>
+
+<!-- MOV [MEM1], IMM1 (x86-x64) (Themida) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg2</first_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg2</first_reg>
+		<imm>imm1</imm>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<second_reg>reg2</second_reg>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg2</first_reg>
+	</match>
+	<replace>
+		<rep_str>mov mem1, imm1</rep_str>
+	</replace>
+</pattern>
+
+<!-- MOV [MEM1], REG1 - OP1 [MEM1], IMM1 -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<match>
+		<insn>add,sub,and,xor,or</insn>
+		<ins_name>op1</ins_name>
+		<mem>mem2</mem>
+		<mem_base>stack</mem_base>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<imm>imm1</imm>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<mem>mem1</mem>
+	</match>
+	<replace>
+		<rep_str>mov mem1, reg1</rep_str>
+	</replace>
+	<replace>
+		<rep_str>op1 mem1, imm1</rep_str>
+	</replace>
+</pattern>
+
+<!-- MOV [REG1 + IMM1], REG2 -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg3</first_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg3</first_reg>
+		<imm>imm1</imm>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>reg3</first_reg>
+		<second_reg>reg1</second_reg>
+	</match>
+	<match>
+		<insn>mov,add,sub,and,xor,or</insn>
+		<ins_name>op1</ins_name>
+		<mem>mem1</mem>
+		<mem_base>reg3</mem_base>
+		<second_reg>reg2</second_reg>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg3</first_reg>
+	</match>
+	<replace>
+		<rep_str>op1 [reg1 + imm1], reg2</rep_str>
+	</replace>
+</pattern>
+
+<!-- MOV [IMM1], REG1 (x86-x64) (Themida) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg2</first_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg2</first_reg>
+		<imm>imm1</imm>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<mem_size>?</mem_size>
+		<mem_base>reg2</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<second_reg>reg1</second_reg>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg2</first_reg>
+	</match>
+	<replace>
+		<rep_str>mov [imm1], reg1</rep_str>
+	</replace>
+</pattern>
+
+<!-- XCHG REG1, [MEM1] (x86) (Themida) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg2</first_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg3</first_reg>
+		<second_reg>reg1</second_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg1</first_reg>
+		<mem>mem1</mem>
+		<mem_size_name>szm1</mem_size_name>
+		<mem_base>stack</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>4</mem_disp>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<mem>mem1</mem>
+		<mem_base>stack</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>4</mem_disp>
+		<second_reg>reg3</second_reg>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg2</first_reg>
+	</match>
+	<replace>
+		<rep_str>xchg reg1, szm1 ptr [esp]</rep_str>
+	</replace>
+</pattern>
+
+<!-- MOV REG1, REG2 -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg3</first_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg4</first_reg>
+		<second_reg>reg2</second_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg1</first_reg>
+		<second_reg>reg4</second_reg>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg3</first_reg>
+	</match>
+	<replace>
+		<rep_str>mov reg1, reg2</rep_str>
+	</replace>
+</pattern>
+
+<!-- ADD ESP, IMM1 - SUB ESP, 4 (x86) (Themida) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg1</first_reg>
+		<second_reg>esp</second_reg>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>reg1</first_reg>
+		<imm>imm1</imm>
+		<update_imm>-,I,4</update_imm>
+	</match>
+	<match>
+		<insn>xchg</insn>
+		<mem>mem1</mem>
+		<mem_size>4</mem_size>
+		<mem_base>esp</mem_base>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<second_reg>reg1</second_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>esp</first_reg>
+		<mem>mem1</mem>
+		<mem_size>4</mem_size>
+		<mem_base>esp</mem_base>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+	</match>
+	<replace>
+		<rep_str>add esp, imm1</rep_str>
+	</replace>
+</pattern>
+
+<!-- ADD ESP, IMM1 - SUB ESP, 4 (x86) (Themida) -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg1</first_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg1</first_reg>
+		<second_reg>esp</second_reg>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>reg1</first_reg>
+		<imm>imm1</imm>
+		<update_imm>-,I,4</update_imm>
+	</match>
+	<match>
+		<insn>xchg</insn>
+		<mem>mem1</mem>
+		<mem_size>4</mem_size>
+		<mem_base>esp</mem_base>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<second_reg>reg1</second_reg>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>esp</first_reg>
+	</match>
+	<replace>
+		<rep_str>add esp, imm1</rep_str>
+	</replace>
+</pattern>
+
+<!-- TOTAL TEST -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg3</first_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg3</first_reg>
+		<second_reg>reg2</second_reg>
+	</match>
+	<match>
+		<insn>shl</insn>
+		<first_reg>reg3</first_reg>
+		<imm>imm1</imm>
+		<update_imm>^,2,I</update_imm>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>reg3</first_reg>
+		<imm>imm2</imm>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>reg3</first_reg>
+		<second_reg>reg1</second_reg>
+	</match>
+	<match>
+		<insn>add,sub,and,xor,or</insn>
+		<ins_name>op1</ins_name>
+		<mem>mem1</mem>
+		<mem_size_name>szm1</mem_size_name>
+		<mem_base>reg3</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<imm>imm3</imm>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg3</first_reg>
+	</match>
+	<replace>
+		<rep_str>op1 szm1 ptr [reg1 + reg2 * imm1 + imm2], imm3</rep_str>
+	</replace>
+</pattern>
+
+<!-- TOTAL TEST -->
+<pattern>
+	<match>
+		<insn>push</insn>
+		<first_reg>reg3</first_reg>
+	</match>
+	<match>
+		<insn>mov</insn>
+		<first_reg>reg3</first_reg>
+		<second_reg>reg2</second_reg>
+	</match>
+	<match>
+		<insn>shl</insn>
+		<first_reg>reg3</first_reg>
+		<imm>imm1</imm>
+		<update_imm>^,2,I</update_imm>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>reg3</first_reg>
+		<imm>imm2</imm>
+	</match>
+	<match>
+		<insn>add</insn>
+		<first_reg>reg3</first_reg>
+		<second_reg>reg1</second_reg>
+	</match>
+	<match>
+		<insn>add,sub,and,xor,or</insn>
+		<ins_name>op1</ins_name>
+		<mem>mem1</mem>
+		<mem_size_name>szm1</mem_size_name>
+		<mem_base>reg3</mem_base>
+		<mem_index>NONE</mem_index>
+		<mem_scale>1</mem_scale>
+		<mem_disp>0</mem_disp>
+		<second_reg>reg4</second_reg>
+	</match>
+	<match>
+		<insn>pop</insn>
+		<first_reg>reg3</first_reg>
+	</match>
+	<replace>
+		<rep_str>op1 szm1 ptr [reg1 + reg2 * imm1 + imm2], reg4</rep_str>
+	</replace>
+</pattern>
+
+<!-- SUB RSP, 8 (x64) -->
+<pattern>
+	<match>
+		<insn>add</insn>
+		<first_reg>rsp</first_reg>
+		<imm>-8</imm>
+	</match>
+	<replace>
+		<rep_str>sub rsp, 8</rep_str>
+	</replace>
+</pattern>
